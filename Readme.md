@@ -1,4 +1,4 @@
-# [TODO List](https://eugene-gif.github.io/)
+# [TODO List](https://eugene-gif.github.io/todo-list)
 
 ## Описание:
 Проект представляет из себя простой список дел на нативном JS

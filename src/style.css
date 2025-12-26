@@ -45,10 +45,6 @@ button:focus:not(:focus-visible) {
 
 @media(hover:hover) {
   button:hover {
-    box-shadow: 0px 0px 5px 1px #f39c12;
+    filter: drop-shadow(0 0px 6px #f39c12);
   }
-}
-
-button {
-  transition: box-shadow 0.3s;
 }

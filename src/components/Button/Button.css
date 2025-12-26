@@ -7,5 +7,5 @@
   padding: 12px;
   width: 55px;
   height: 40px;
-  transition: box-shadow 0.3s;
+  transition: filter 0.3s;
 }
