@@ -1,0 +1,54 @@
+:root {
+  font-family: "Inter", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: rgba(87, 87, 87, 0.87);
+  background-color: #f5f5f5;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.todo-container {
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+}
+
+button:focus {
+  outline: 2px solid #f39c12;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media(hover:hover) {
+  button:hover {
+    box-shadow: 0px 0px 5px 1px #f39c12;
+  }
+}
+
+button {
+  transition: box-shadow 0.3s;
+}
