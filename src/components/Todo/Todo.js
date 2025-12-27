@@ -11,6 +11,7 @@ export function Todo() {
 		const list = document.querySelector('.todo__list');
 		const count = document.querySelector('.todo__count-value span');
 		const inputSearch = document.querySelector('.input__field.search');
+		const messsageEmptyList = document.querySelector('.todo__list-empty');
 
 		const renderElement = (item) => {
 			const li = document.createElement('li');
@@ -36,12 +37,27 @@ export function Todo() {
 			list.append(li);
 		}
 
+		const hideList = (message='Список пуст') => {
+			list.classList.add('--hide');
+			messsageEmptyList.classList.remove('--hide');
+			messsageEmptyList.textContent = message;
+		}
+
+		const showList = () => {
+			list.classList.remove('--hide');
+			messsageEmptyList.classList.add('--hide');
+		}
+
 		const renderList = (tasks) => {
 			list.replaceChildren();
+			showList();
+
 			if (tasks.length) {
 				tasks.forEach((item) => {
 					renderElement(item);
 				});
+			} else {
+				hideList();
 			}
 		}
 
@@ -63,6 +79,8 @@ export function Todo() {
 				completed: false,
 			};
 
+			if (tasks.length === 0) showList();
+
 			renderElement(item);
 			tasks.push(item);
 			saveToStorage();
@@ -82,6 +100,7 @@ export function Todo() {
 			if (isDelete) {
 				item.remove();
 				tasks = tasks.filter(el => el.id !== id);
+				if (tasks.length === 0) hideList();
 			}
 
 			if (isCheckbox) {
@@ -100,48 +119,61 @@ export function Todo() {
 			tasks = [];
 			list.replaceChildren();
 			updateCount();
+			hideList();
 		}
 
 
 		// "Тяжёлая" функция: фильтрация + перерендер
-		const renderFilteredList = (query) => {
-			const newArr = tasks.filter((el) => {
-				return el.value.trim().toLowerCase().includes(query.toLowerCase())
-			});
-			
-			console.log("Рендерим по запросу:", query);
-			renderList(newArr);
-		}
+		// const renderFilteredList = (query) => {
+		// 	const filteredList = tasks.filter((el) => {
+		// 		return el.value.trim().toLowerCase().includes(query.toLowerCase())
+		// 	});
+
+		// 	console.log("Рендерим по запросу:", query);
+		// 	if (!filteredList.length) {
+		// 		console.log('Список пуст');
+		// 	}
+
+		// 	renderList(filteredList);
+		// }
 
 		// Реализация debounce
-		const debounce = (fn, ms = 300) => {
-			let timerId;
+		// const debounce = (fn, ms = 300) => {
+		// 	let timerId;
 
-			return (...args) => {
-				clearTimeout(timerId);
-				timerId = setTimeout(() => {
-					fn(...args);
-				}, ms);
-			}
-		}
+		// 	return (...args) => {
+		// 		clearTimeout(timerId);
+		// 		timerId = setTimeout(() => {
+		// 			fn(...args);
+		// 		}, ms);
+		// 	}
+		// }
 
 		// делаем "заторможенную" версию
-		const renderDebounced = debounce(renderFilteredList, 500);
+		// const renderDebounced = debounce(renderFilteredList, 300);
 
 		renderList(tasks);
 		updateCount();
 
 		inputSearch.addEventListener('input', (evt) => {
 			let query = evt.target.value.trim();
-			console.log(query);
 
-			if (query === "") {
+			if (query.length === 0) {
 				renderList(tasks); // сразу
 				return;
 			}
 
+			const filteredTasks = tasks.filter((el) => {
+				return el.value.trim().toLowerCase().includes(query.toLowerCase())
+			});
 
-			renderDebounced(query);
+			if (!filteredTasks.length && query.length) {
+				hideList(`По запросу "${query}" ничего не найдено`);
+				// messsageEmptyList.textContent = `По запросу "${query}" ничего не найдено`;
+				return;
+			}
+
+			renderList(filteredTasks);
 		});
 
 		formAdd.addEventListener('submit', addItem);
@@ -151,7 +183,7 @@ export function Todo() {
 
 	return `
 	<div class="todo">
-		<h2 class="todo__title">To Do List</h2>
+		<h1 class="todo__title">To Do List</h1>
 		<form id="todo-add" class="todo__add">
 			${Input('Добавить задачу', 'task')}
 			${Button('Add', 'submit')}
@@ -163,5 +195,6 @@ export function Todo() {
 		</div>
 		<ul class="todo__list">
 		</ul>
+		<div class="todo__list-empty">Список пуст</div>
 	</div>`;
 }

@@ -131,4 +131,13 @@
   .todo__item:has(input[type="checkbox"]:checked) {
     background-color: #eaffea;
   }
+
+  .todo__list-empty {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .--hide {
+    display: none;
+  }
 }
