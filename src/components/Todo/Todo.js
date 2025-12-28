@@ -6,12 +6,14 @@ export function Todo() {
 	let tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
 
 	document.addEventListener('DOMContentLoaded', () => {
-		const formAdd = document.getElementById('todo-add');
-		const resetAll = document.querySelector('.todo__count-reset');
-		const list = document.querySelector('.todo__list');
-		const count = document.querySelector('.todo__count-value span');
-		const inputSearch = document.querySelector('.input__field.search');
-		const messsageEmptyList = document.querySelector('.todo__list-empty');
+		const root = document.getElementById('todo');
+		const formAdd = root.querySelector('#todo-add');
+		const inputSearch = root.querySelector('.input__field.search');
+		const resetAll = root.querySelector('.btn-delete-all');
+		const list = root.querySelector('.todo__list');
+		const count = root.querySelector('.todo__count-value span');
+		const messsageEmptyList = root.querySelector('.todo__list-empty');
+		let timeoutId = null;
 
 		const renderElement = (item) => {
 			const li = document.createElement('li');
@@ -29,7 +31,7 @@ export function Todo() {
 			text.textContent = item.value;
 
 			const btnRemove = document.createElement('button');
-			btnRemove.classList.add('todo__item-delete');
+			btnRemove.classList.add('button', 'btn-delete-task');
 			btnRemove.type = "button";
 			btnRemove.textContent = "✖";
 
@@ -37,7 +39,7 @@ export function Todo() {
 			list.append(li);
 		}
 
-		const hideList = (message='Список пуст') => {
+		const hideList = (message = 'Список пуст') => {
 			list.classList.add('--hide');
 			messsageEmptyList.classList.remove('--hide');
 			messsageEmptyList.textContent = message;
@@ -74,7 +76,7 @@ export function Todo() {
 			if (!formAdd.task.value) return false;
 
 			const item = {
-				id: crypto.randomUUID(),
+				id: crypto?.randomUUID() ?? Date.now().toString(),
 				value: formAdd.task.value,
 				completed: false,
 			};
@@ -86,11 +88,12 @@ export function Todo() {
 			saveToStorage();
 			updateCount();
 			formAdd.reset();
+			formAdd.task.focus();
 		}
 
 		const actionItem = (evt) => {
 			evt.preventDefault();
-			const isDelete = evt.target.classList.contains('todo__item-delete');
+			const isDelete = evt.target.classList.contains('btn-delete-task');
 			const isCheckbox = !!evt.target.closest('.todo__item-checkbox');
 			if (!isDelete && !isCheckbox) return false;
 
@@ -98,9 +101,12 @@ export function Todo() {
 			const item = list.querySelector(`[data-id="${id}"]`);
 
 			if (isDelete) {
-				item.remove();
-				tasks = tasks.filter(el => el.id !== id);
-				if (tasks.length === 0) hideList();
+				item.classList.add('is-disappearing');
+				setTimeout(() => {
+					item.remove();
+					tasks = tasks.filter(el => el.id !== id);
+					if (tasks.length === 0) hideList();
+				}, 300);
 			}
 
 			if (isCheckbox) {
@@ -110,8 +116,10 @@ export function Todo() {
 				el.completed = checkbox.checked;
 			}
 
-			saveToStorage();
-			updateCount();
+			setTimeout(() => {
+				saveToStorage();
+				updateCount();
+			}, 310);
 		}
 
 		const removeAll = () => {
@@ -122,58 +130,28 @@ export function Todo() {
 			hideList();
 		}
 
-
-		// "Тяжёлая" функция: фильтрация + перерендер
-		// const renderFilteredList = (query) => {
-		// 	const filteredList = tasks.filter((el) => {
-		// 		return el.value.trim().toLowerCase().includes(query.toLowerCase())
-		// 	});
-
-		// 	console.log("Рендерим по запросу:", query);
-		// 	if (!filteredList.length) {
-		// 		console.log('Список пуст');
-		// 	}
-
-		// 	renderList(filteredList);
-		// }
-
-		// Реализация debounce
-		// const debounce = (fn, ms = 300) => {
-		// 	let timerId;
-
-		// 	return (...args) => {
-		// 		clearTimeout(timerId);
-		// 		timerId = setTimeout(() => {
-		// 			fn(...args);
-		// 		}, ms);
-		// 	}
-		// }
-
-		// делаем "заторможенную" версию
-		// const renderDebounced = debounce(renderFilteredList, 300);
-
 		renderList(tasks);
 		updateCount();
 
 		inputSearch.addEventListener('input', (evt) => {
-			let query = evt.target.value.trim();
+			let query = evt.target.value.trim().toLowerCase();
+			clearTimeout(timeoutId);
 
 			if (query.length === 0) {
 				renderList(tasks); // сразу
 				return;
 			}
 
-			const filteredTasks = tasks.filter((el) => {
-				return el.value.trim().toLowerCase().includes(query.toLowerCase())
-			});
+			const filteredTasks = tasks.filter(el => el.value.trim().toLowerCase().includes(query));
 
-			if (!filteredTasks.length && query.length) {
-				hideList(`По запросу "${query}" ничего не найдено`);
-				// messsageEmptyList.textContent = `По запросу "${query}" ничего не найдено`;
-				return;
-			}
+			timeoutId = setTimeout(() => {
+				if (!filteredTasks.length && query.length) {
+					hideList(`По запросу "${query}" ничего не найдено`);
+					return;
+				}
 
-			renderList(filteredTasks);
+				renderList(filteredTasks);
+			}, 500);
 		});
 
 		formAdd.addEventListener('submit', addItem);
@@ -182,19 +160,22 @@ export function Todo() {
 	});
 
 	return `
-	<div class="todo">
+	<div class="todo" id="todo">
 		<h1 class="todo__title">To Do List</h1>
 		<form id="todo-add" class="todo__add">
 			${Input('Добавить задачу', 'task')}
-			${Button('Add', 'submit')}
+			${Button('Add', 'btn-add-task', 'submit')}
 		</form>
 		${Input('Поиск', 'search', true)}
 		<div class="todo__count">
 			<div class="todo__count-value">Всего задач: <span></span></div>
-			<div class="todo__count-reset" tabindex="0">Очистить всё</div>
+			${Button('Oчистить всё', 'btn-delete-all')}
 		</div>
-		<ul class="todo__list">
-		</ul>
+		<ul class="todo__list"></ul>
 		<div class="todo__list-empty">Список пуст</div>
+		<!--<button onclick="window['todo-modal'].showModal()">Open</button>
+		<dialog id="todo-modal">
+			<button onclick="window['todo-modal'].close()">Close</button>
+		</dialog>-->
 	</div>`;
 }

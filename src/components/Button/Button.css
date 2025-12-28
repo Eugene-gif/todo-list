@@ -5,7 +5,68 @@
   border-radius: 8px;
   cursor: pointer;
   padding: 12px;
-  width: 55px;
+  min-width: 40px;
   height: 40px;
-  transition: filter 0.3s;
+  flex-shrink: 0;
+  transition-property: color, background-color, border-color;
+  transition-duration: 0.2s;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+
+  @media(hover:hover) {
+    &:hover {
+      background-color: #adadad;
+      border-color: #adadad;
+    }
+  }
+
+  /* &.btn-add-task {} */
+
+  &.btn-delete-task {
+    border: transparent;
+    background-color: transparent;
+    color: #2c2c2c;
+    height: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 0 12px 12px 0;
+
+    @media(hover:hover) {
+      &:hover {
+        background-color: #ffeaf0;
+        border-color: #ffeaf0;
+      }
+    }
+  }
+
+  &.btn-delete-all {
+    border: transparent;
+    background-color: transparent;
+    padding: 2px;
+    height: auto;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #000;
+
+    @media(hover:hover) {
+      &:hover {
+        color: #adadad;
+      }
+    }
+  }
+
+  &:active {
+    filter: drop-shadow(0 0px 4px #f39c12);
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #f39c12;
+    outline-offset: 1px;
+  }
 }

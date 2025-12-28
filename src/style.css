@@ -1,5 +1,4 @@
 :root {
-  font-family: "Inter", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: rgba(87, 87, 87, 0.87);
@@ -12,17 +11,25 @@
 }
 
 * {
+  margin: 0;
+  padding: 0;
+  border: 0;
   box-sizing: border-box;
 }
 
+html {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+}
+
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 40px 15px;
   text-align: center;
 }
 
@@ -33,18 +40,4 @@ body {
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 8px;
-}
-
-button:focus {
-  outline: 2px solid #f39c12;
-}
-
-button:focus:not(:focus-visible) {
-  outline: none;
-}
-
-@media(hover:hover) {
-  button:hover {
-    filter: drop-shadow(0 0px 6px #f39c12);
-  }
 }

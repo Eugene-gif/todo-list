@@ -5,7 +5,7 @@
 
   .todo__title {
     font-weight: 600;
-    font-size: 24px;
+    font-size: 1.75rem;
     margin: 0;
     line-height: 120%;
     letter-spacing: -0.02em;
@@ -23,34 +23,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .todo__count-value,
-  .todo__count-reset {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1rem;
     color: #000;
-  }
-
-  .todo__count-reset {
-    cursor: pointer;
-    user-select: none;
-    padding: 2px;
-    transition: filter 0.3s;
-  }
-
-  .todo__count-reset:focus {
-    outline: 2px solid #f39c12;
-  }
-
-  .todo__count-reset:focus:not(:focus-visible) {
-    outline: none;
-  }
-
-  @media(hover:hover) {
-    .todo__count-reset:hover {
-      filter: drop-shadow(0 0px 8px #f39c12);
-    }
   }
 
   .todo__list {
@@ -59,7 +34,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .todo__item {
@@ -67,7 +42,7 @@
     align-items: center;
     justify-content: space-between;
     border: 1px solid grey;
-    padding: 10px;
+    padding: 0 0 0 10px;
     border-radius: 12px;
     gap: 15px;
 
@@ -126,6 +101,20 @@
       align-items: center;
       justify-content: center;
     }
+
+    &.is-disappearing {
+      opacity: 0;
+      translate: 0 -75%;
+      transition-duration: 0.4s;
+      pointer-events: none;
+
+      & ~ .todo__item {
+        translate: 0 calc((100% + 12px) * -1);
+        transition-delay: 0.2s;
+        transition-duration: 0.2s;
+        pointer-events: none;
+      }
+    }
   }
 
   .todo__item:has(input[type="checkbox"]:checked) {
@@ -136,7 +125,7 @@
     font-size: 24px;
     font-weight: 600;
   }
-  
+
   .--hide {
     display: none;
   }

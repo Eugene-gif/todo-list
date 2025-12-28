@@ -1,6 +1,6 @@
 import './Button.css';
-export function Button(text = 'Text', type = 'button') {
+export function Button(text = 'Text', className='', type = 'button') {
 	return `
-		<button class="button" type="${type}">${text}</button>
+		<button class="button${className ? ' ' + className : ''}" type="${type}">${text}</button>
 	`;
 };
