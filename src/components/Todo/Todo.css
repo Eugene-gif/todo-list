@@ -42,7 +42,7 @@
     align-items: center;
     justify-content: space-between;
     border: 1px solid grey;
-    padding: 0 0 0 10px;
+    padding: 10px;
     border-radius: 12px;
     gap: 15px;
 
@@ -108,7 +108,7 @@
       transition-duration: 0.4s;
       pointer-events: none;
 
-      & ~ .todo__item {
+      &~.todo__item {
         translate: 0 calc((100% + 12px) * -1);
         transition-delay: 0.2s;
         transition-duration: 0.2s;
@@ -124,6 +124,50 @@
   .todo__list-empty {
     font-size: 24px;
     font-weight: 600;
+  }
+
+  #todo-modal {
+    display: none;
+  }
+
+  #todo-modal[open] {
+    display: block;
+    max-width: 250px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 20vh;
+    border-radius: 12px;
+    border: 1px solid grey;
+
+    .panel {
+      padding: 16px;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    .text {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+
+    .btn-modal-close {
+      background-color: transparent;
+      color: #2c2c2c;
+    }
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
   }
 
   .--hide {

@@ -16,12 +16,10 @@
 
   @media(hover:hover) {
     &:hover {
-      background-color: #adadad;
-      border-color: #adadad;
+      background-color: #656565;
+      border-color: #656565;
     }
   }
-
-  /* &.btn-add-task {} */
 
   &.btn-delete-task {
     border: transparent;
@@ -30,7 +28,8 @@
     height: 100%;
     padding: 10px;
     font-size: 1rem;
-    border-radius: 0 12px 12px 0;
+    border-radius: 10px;
+    align-self: flex-start;
 
     @media(hover:hover) {
       &:hover {

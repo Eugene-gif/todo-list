@@ -15,6 +15,10 @@ export function Todo() {
 		const messsageEmptyList = root.querySelector('.todo__list-empty');
 		let timeoutId = null;
 
+		const todoModal = root.querySelector('#todo-modal');
+		const todoModalBtnOk = todoModal.querySelector('.btn-modal-ok');
+		const todoModalBtnClose = todoModal.querySelector('.btn-modal-close');
+
 		const renderElement = (item) => {
 			const li = document.createElement('li');
 			li.classList.add('todo__item');
@@ -69,6 +73,8 @@ export function Todo() {
 
 		const updateCount = () => {
 			count.textContent = tasks.length;
+			if (!tasks.length) resetAll.classList.add('--hide');
+			else resetAll.classList.remove('--hide');
 		}
 
 		const addItem = (evt) => {
@@ -133,6 +139,7 @@ export function Todo() {
 		renderList(tasks);
 		updateCount();
 
+		// Слушатели событий
 		inputSearch.addEventListener('input', (evt) => {
 			let query = evt.target.value.trim().toLowerCase();
 			clearTimeout(timeoutId);
@@ -155,8 +162,17 @@ export function Todo() {
 		});
 
 		formAdd.addEventListener('submit', addItem);
-		resetAll.addEventListener('click', removeAll);
+
 		list.addEventListener('click', actionItem);
+
+		resetAll.addEventListener('click', () => todoModal.showModal());
+
+		todoModalBtnOk.addEventListener('click', () => {
+			removeAll();
+			todoModal.close();
+		});
+
+		todoModalBtnClose.addEventListener('click', () => todoModal.close());
 	});
 
 	return `
@@ -173,9 +189,14 @@ export function Todo() {
 		</div>
 		<ul class="todo__list"></ul>
 		<div class="todo__list-empty">Список пуст</div>
-		<!--<button onclick="window['todo-modal'].showModal()">Open</button>
 		<dialog id="todo-modal">
-			<button onclick="window['todo-modal'].close()">Close</button>
-		</dialog>-->
+			<div class="panel">
+				<p class="text">Удалить все задачи?</p>
+				<div class="actions">
+					${Button('Ок', 'btn-modal-ok')}
+					${Button('Отмена', 'btn-modal-close')}
+				</div>
+			</div>
+		</dialog>
 	</div>`;
 }
