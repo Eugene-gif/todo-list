@@ -1,4 +1,5 @@
 import './Todo.css';
+import './Modal.css';
 import { Input } from '@/components/Input/Input';
 import { Button } from '@/components/Button/Button';
 
@@ -136,6 +137,11 @@ export function Todo() {
 			hideList();
 		}
 
+		const animateCloseModal = () => {
+			todoModal.classList.add('close');
+			setTimeout(() => todoModal.close(), 500);
+		}
+
 		renderList(tasks);
 		updateCount();
 
@@ -165,14 +171,34 @@ export function Todo() {
 
 		list.addEventListener('click', actionItem);
 
-		resetAll.addEventListener('click', () => todoModal.showModal());
+		resetAll.addEventListener('click', () => {
+			todoModal.classList.remove('close');
+			todoModal.showModal();
+		});
 
 		todoModalBtnOk.addEventListener('click', () => {
 			removeAll();
-			todoModal.close();
+			animateCloseModal();
 		});
 
-		todoModalBtnClose.addEventListener('click', () => todoModal.close());
+		todoModalBtnClose.addEventListener('click', () => {
+			animateCloseModal();
+		});
+
+		// Закрытие по клику на backdrop (вне .panel)
+		todoModal.addEventListener("click", (e) => {
+			e.preventDefault();
+			const panel = todoModal.querySelector(".panel");
+			const clickedInside = panel.contains(e.target);
+			if (!clickedInside) animateCloseModal();
+		});
+
+		document.addEventListener("keydown", (evt) => {
+			if (evt.key === 'Escape') {
+				evt.preventDefault();
+				animateCloseModal();
+			}
+		})
 	});
 
 	return `

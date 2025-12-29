@@ -1,0 +1,71 @@
+#todo-modal {
+  max-width: 250px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 20vh;
+  border-radius: 12px;
+  border: 1px solid grey;
+  animation: fadeIn 0.5s ease both;
+
+  &::backdrop {
+    animation: fadeIn 0.5s ease both;
+    z-index: 2;
+    backdrop-filter: blur(20px);
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  .panel {
+    padding: 16px;
+    background: #fff;
+    border-radius: 12px;
+  }
+
+  .text {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    user-select: none;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+
+  .btn-modal-close {
+    background-color: transparent;
+    color: #2c2c2c;
+  }
+}
+
+/* класс .close нужен для анимации закрытия */
+#todo-modal.close {
+  animation: fadeOut 0.5s ease both;
+
+  &::backdrop {
+    animation: fadeOut 0.5s ease both;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
