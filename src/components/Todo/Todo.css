@@ -1,7 +1,7 @@
 .todo {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 15px;
 
   .todo__title {
     font-weight: 600;
@@ -26,6 +26,7 @@
     font-weight: 600;
     font-size: 1rem;
     color: #000;
+    margin: 10px 0;
   }
 
   .todo__list {
