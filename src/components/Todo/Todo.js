@@ -17,6 +17,7 @@ export function Todo() {
 		const count = root.querySelector('.todo__count-value span');
 		const messsageEmptyList = root.querySelector('.todo__list-empty');
 		let timeoutId = null;
+		let isEditing = false;
 
 		const todoModal = root.querySelector('#todo-modal');
 		const todoModalBtnOk = todoModal.querySelector('.btn-modal-ok');
@@ -124,6 +125,7 @@ export function Todo() {
 
 			const id = evt.target.closest('.todo__item').dataset.id;
 			const item = list.querySelector(`[data-id="${id}"]`);
+			const dataItem = tasks.find((el) => el.id === id);
 
 			if (isDelete) {
 				item.classList.add('is-disappearing');
@@ -136,13 +138,31 @@ export function Todo() {
 
 			if (isCheckbox) {
 				const checkbox = item.querySelector('.checkbox__input');
-				const el = tasks.find((el) => el.id === id);
 				checkbox.checked = !checkbox.checked;
-				el.completed = checkbox.checked;
+				dataItem.completed = checkbox.checked;
 			}
 
-			if (isText) {
-				console.log('Логика изменения текста элемента: ', id);
+			if (isText && !isEditing) {
+				const view = evt.target.closest('.checkbox__text');
+				const area = document.createElement("textarea");
+				area.classList.add('checkbox__textarea');
+				area.value = view.innerHTML;
+				view.replaceWith(area);
+				area.focus();
+				isEditing = true;
+
+				area.onkeydown = (e) => {
+					if (e.key === "Enter" && e.shiftKey) return;
+					if (e.key === "Enter") area.blur();
+				};
+
+				area.onblur = () => {
+					view.innerHTML = area.value;
+					dataItem.value = area.value;
+					area.replaceWith(view);
+					isEditing = false;
+					saveToStorage();
+				}
 			}
 
 			setTimeout(() => {

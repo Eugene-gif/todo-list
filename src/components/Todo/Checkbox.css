@@ -57,7 +57,7 @@
     text-decoration: underline;
   } */
 
-  .checkbox__input:checked~.checkbox__text {
+  .checkbox__input:checked~.checkbox__text:not(:empty) {
     text-decoration: line-through;
     color: #757575;
   }
@@ -67,7 +67,7 @@
     text-decoration: underline;
   }
 
-  .checkbox__input:checked~.checkbox__label .checkbox__text {
+  .checkbox__input:checked~.checkbox__label .checkbox__text:not(:empty) {
     text-decoration: line-through;
     color: #757575;
   }
@@ -117,13 +117,37 @@
     opacity: 1;
   }
 
-  & .checkbox__text {
+  .checkbox__text {
     color: #000;
-		text-align: left;
+    text-align: left;
+
+    &:empty {
+      cursor: pointer;
+      align-self: center;
+    }
+
+    &:empty:before {
+      font-size: 14px;
+      content: "Пусто";
+      color: #bab3b3
+    }
   }
 
-  .checkbox__input:checked~.checkbox__text {
-    text-decoration: line-through;
-    color: #757575;
+  .checkbox__textarea {
+    min-width: 50px;
+    max-width: 330px;
+    max-height: 150px;
+    height: 30px;
+    overflow-y: auto;
+    font-size: 16px;
+    line-height: 1.1;
+    padding: 5px;
+    border: 2px solid #d9d9d9;
+    border-radius: 8px;
+    outline: none;
+
+    &:focus-visible {
+      border-color: #f39c12;
+    }
   }
 }
