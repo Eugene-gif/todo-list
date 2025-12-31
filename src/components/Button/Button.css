@@ -14,7 +14,7 @@
   cursor: pointer;
   user-select: none;
 
-  @media(hover:hover) {
+  @media (hover: hover) {
     &:hover {
       background-color: #656565;
       border-color: #656565;
@@ -27,16 +27,14 @@
     color: #2c2c2c;
     height: 100%;
     padding: 10px;
-    font-size: 1rem;
+    height: 40px;
+    width: 40px;
+    font-size: 16px;
+    line-height: 1;
     border-radius: 10px;
     align-self: flex-start;
-
-    @media(hover:hover) {
-      &:hover {
-        background-color: #ffeaf0;
-        border-color: #ffeaf0;
-      }
-    }
+    background-color: #ffeaf0;
+    border-color: #ffeaf0;
   }
 
   &.btn-delete-all {
@@ -49,7 +47,7 @@
     font-size: 1rem;
     color: #000;
 
-    @media(hover:hover) {
+    @media (hover: hover) {
       &:hover {
         color: #adadad;
       }

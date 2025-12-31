@@ -1,0 +1,27 @@
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid grey;
+  padding: 10px;
+  border-radius: 12px;
+  gap: 15px;
+
+  &.is-disappearing {
+    opacity: 0;
+    translate: 0 -75%;
+    transition-duration: 0.4s;
+    pointer-events: none;
+
+    &~.todo__item {
+      translate: 0 calc((50% + 12px) * -1);
+      transition-delay: 0.2s;
+      transition-duration: 0.2s;
+      pointer-events: none;
+    }
+  }
+
+  &:has(input[type="checkbox"]:checked) {
+    background-color: #eaffea;
+  }
+}

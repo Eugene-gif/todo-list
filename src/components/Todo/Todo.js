@@ -1,4 +1,6 @@
 import './Todo.css';
+import './Item.css';
+import './Checkbox.css';
 import './Modal.css';
 import { Input } from '@/components/Input/Input';
 import { Button } from '@/components/Button/Button';
@@ -22,25 +24,39 @@ export function Todo() {
 
 		const renderElement = (item) => {
 			const li = document.createElement('li');
-			li.classList.add('todo__item');
+			li.classList.add('todo__item', 'item');
 			li.dataset.id = item.id;
 
-			const label = document.createElement('label');
-			label.classList.add('todo__item-checkbox');
+			const checkbox = li.appendChild(document.createElement('div'));
+			checkbox.classList.add('checkbox', 'item__checkbox');
 
-			const checkbox = label.appendChild(document.createElement('input'));
-			checkbox.type = "checkbox";
-			item.completed ? checkbox.checked = true : '';
+			const input = checkbox.appendChild(document.createElement('input'));
+			input.type = 'checkbox';
+			input.id = item.id;
+			item.completed ? input.checked = true : '';
+			input.classList.add('checkbox__input');
 
-			const text = label.appendChild(document.createElement('span'));
+			const label = checkbox.appendChild(document.createElement('label'));
+			label.for = item.id;
+			label.classList.add('checkbox__label');
+
+			const box = label.appendChild(document.createElement('div'));
+			box.classList.add('checkbox__box');
+
+			const icon = box.appendChild(document.createElement('div'));
+			icon.classList.add('checkbox__icon');
+			icon.textContent = '✔';
+
+			const text = checkbox.appendChild(document.createElement('p'));
+			text.classList.add('checkbox__text', 'item__text');
 			text.textContent = item.value;
 
-			const btnRemove = document.createElement('button');
-			btnRemove.classList.add('button', 'btn-delete-task');
+			const btnRemove = li.appendChild(document.createElement('button'));
+			btnRemove.classList.add('button', 'btn-delete-task', 'item__button-delete');
 			btnRemove.type = "button";
 			btnRemove.textContent = "✖";
 
-			li.replaceChildren(label, btnRemove);
+			li.replaceChildren(checkbox, btnRemove);
 			list.append(li);
 		}
 
@@ -101,8 +117,10 @@ export function Todo() {
 		const actionItem = (evt) => {
 			evt.preventDefault();
 			const isDelete = evt.target.classList.contains('btn-delete-task');
-			const isCheckbox = !!evt.target.closest('.todo__item-checkbox');
-			if (!isDelete && !isCheckbox) return false;
+			const isCheckbox = !!evt.target.closest('.checkbox__label');
+			const isText = !!evt.target.closest('.checkbox__text');
+
+			if (!isDelete && !isCheckbox && !isText) return false;
 
 			const id = evt.target.closest('.todo__item').dataset.id;
 			const item = list.querySelector(`[data-id="${id}"]`);
@@ -117,10 +135,14 @@ export function Todo() {
 			}
 
 			if (isCheckbox) {
-				const checkbox = item.querySelector('.todo__item-checkbox input');
+				const checkbox = item.querySelector('.checkbox__input');
 				const el = tasks.find((el) => el.id === id);
 				checkbox.checked = !checkbox.checked;
 				el.completed = checkbox.checked;
+			}
+
+			if (isText) {
+				console.log('Логика изменения текста элемента: ', id);
 			}
 
 			setTimeout(() => {
