@@ -32,6 +32,18 @@
   transition: fill 0.1s linear;
 }
 
+.input__clear.button {
+  border: none;
+  background-color: transparent;
+  padding: 2px;
+  font-size: 16px;
+  color: inherit;
+  height: 100%;
+  width: 40px;
+  position: absolute;
+  right: 0;
+}
+
 .input__field:focus {
   border-color: #f39c12;
 }

@@ -190,11 +190,30 @@ export function Todo() {
 		// Слушатели событий
 		inputSearch.addEventListener('input', (evt) => {
 			let query = evt.target.value.trim().toLowerCase();
+			const fieldSearch = evt.target.closest('.todo__input');
+			const iconSearch = fieldSearch.querySelector('.input__icon');
+			const clearSearch = fieldSearch.querySelector('.input__clear');
 			clearTimeout(timeoutId);
 
+			clearSearch.onclick = () => {
+				inputSearch.value = '';
+				iconSearch.classList.remove('--hide');
+				clearSearch.classList.add('--hide');
+				renderList(tasks);
+				inputSearch.focus();
+				return;
+			}
+
 			if (query.length === 0) {
+				iconSearch.classList.remove('--hide');
+				clearSearch.classList.add('--hide');
 				renderList(tasks); // сразу
 				return;
+			}
+
+			if (!!query.length) {
+				iconSearch.classList.add('--hide');
+				clearSearch.classList.remove('--hide');
 			}
 
 			const filteredTasks = tasks.filter(el => el.value.trim().toLowerCase().includes(query));
